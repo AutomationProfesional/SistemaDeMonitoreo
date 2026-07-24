@@ -1,0 +1,238 @@
+{
+  "name": "Sistema Monitoreo Servicios",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "monitor-alert",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "7c381462-e23c-4f61-9e56-3937794b6247",
+      "name": "Recibe Log",
+      "webhookId": "ebade1ea-d93d-4962-8cba-c99c20b15b1b"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1UmD3P9Ceiz9mlp2UceAAE9peCP-3Mk5a1E3GhILI_3E",
+          "mode": "list",
+          "cachedResultName": "Montoreo Servicios IT",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1UmD3P9Ceiz9mlp2UceAAE9peCP-3Mk5a1E3GhILI_3E/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1UmD3P9Ceiz9mlp2UceAAE9peCP-3Mk5a1E3GhILI_3E/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "service": "={{ $json.body.service }}",
+            "url": "={{ $json.body.url }}",
+            "status": "={{ $json.body.status }}",
+            "code": "={{ $json.body.code }}",
+            "date": "={{ $json.body.date }}",
+            "message": "={{ $json.body.message }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "service",
+              "displayName": "service",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "url",
+              "displayName": "url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "code",
+              "displayName": "code",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "message",
+              "displayName": "message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "date",
+              "displayName": "date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        208,
+        0
+      ],
+      "id": "99aa6a38-1b95-487a-8e9f-fe1cc607f5f0",
+      "name": "Guarda en Sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "MKZo5VOdCva5Cnfx",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "095b4c66-111e-4541-9b32-7ad7b888ceca",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "ERROR",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "b248d045-fc94-4bea-8a6f-1e3edb65f715",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "DOWN",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        416,
+        0
+      ],
+      "id": "f9ad7c96-3c30-4564-81e6-a1dd447d3251",
+      "name": "If ERROR/DOWN"
+    },
+    {
+      "parameters": {
+        "sendTo": "juanse.user@gmail.com",
+        "subject": "=🚨 ALERTA  IT - {{ $json.service }}",
+        "message": "=<div style=\"font-family: Arial; padding:20px; background:#f4f4f4;\">\n\n  <div style=\"background:white; padding:20px; border-radius:10px;\">\n\n    <h2 style=\"color:red;\">🚨 Alerta de Monitoreo</h2>\n\n    <p>Se detectó una incidencia en un servicio.</p>\n\n    <table style=\"width:100%; border-collapse: collapse;\">\n\n      <tr>\n        <td style=\"padding:8px; border:1px solid #ddd;\"><strong>Servicio</strong></td>\n        <td style=\"padding:8px; border:1px solid #ddd;\">{{ $json.service }}</td>\n      </tr>\n\n      <tr>\n        <td style=\"padding:8px; border:1px solid #ddd;\"><strong>URL</strong></td>\n        <td style=\"padding:8px; border:1px solid #ddd;\">{{ $json.url }}</td>\n      </tr>\n\n      <tr>\n        <td style=\"padding:8px; border:1px solid #ddd;\"><strong>Estado</strong></td>\n        <td style=\"padding:8px; border:1px solid #ddd;\">{{ $json.status }}</td>\n      </tr>\n\n      <tr>\n        <td style=\"padding:8px; border:1px solid #ddd;\"><strong>Fecha</strong></td>\n        <td style=\"padding:8px; border:1px solid #ddd;\">{{ $json.date }}</td>\n      </tr>\n\n    </table>\n\n    <h3>Mensaje</h3>\n\n    <div style=\"background:#eee; padding:10px; border-radius:5px;\">\n      {{ $json.message }}\n    </div>\n\n    <br>\n\n    <p style=\"font-size:12px; color:gray;\">\n      Sistema de Monitoreo Automatizado de Servicios\n    </p>\n\n  </div>\n\n</div>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        624,
+        -144
+      ],
+      "id": "01244dd9-0111-4494-aa28-9c3c0a8bc8d2",
+      "name": "Alerta Mail",
+      "webhookId": "c16c8fab-9591-4af5-93a5-50754339d913",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "zvwol2gSUjnFz6c8",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Recibe Log": {
+      "main": [
+        [
+          {
+            "node": "Guarda en Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Guarda en Sheet": {
+      "main": [
+        [
+          {
+            "node": "If ERROR/DOWN",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If ERROR/DOWN": {
+      "main": [
+        [
+          {
+            "node": "Alerta Mail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "e810cfd4-1b0a-4bbc-9185-a77845f00822",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "9e0a6b3f1fd5a7b884cbc2bc3ad80fdf0a2346452e924fee6ed30d1c66e13162"
+  },
+  "id": "U9VK8wW1pOxzOGVQ",
+  "tags": []
+}
