@@ -33,10 +33,10 @@ El sistema de alertas funciona mediante un Webhook que se comunica directamente 
 *(Nota: Asegúrate de tener estas imágenes en la carpeta de tu repositorio)*
 
 **1. Flujo completo y exitoso en n8n:**
-![Flujo de n8n](test_pics/Workflow_n8n.png)
+![Flujo de n8n](./test_pics/Workflow_n8n.png)
 
 **2. Alerta recibida en la bandeja de entrada:**
-![Alerta Gmail](test_pics/AlertaEnMail.png)
+![Alerta Gmail](./test_pics/AlertaEnMail.png)
 
 **3. Persistencia de datos en la nube:**
-![Google Sheets](test_pics/PersitenciaEnGoogleSheets.png)
+![Google Sheets](./test_pics/PersitenciaEnGoogleSheets.png)
