@@ -40,3 +40,8 @@ El sistema de alertas funciona mediante un Webhook que se comunica directamente 
 
 **3. Persistencia de datos en la nube:**
 ![Google Sheets](sistema-de-monitoreo-automatizado-de-servicios/test_pics/PersitenciaEnGoogleSheets.png)
+
+**4. Dashboard Web con grafico y estados:**
+![Dashboard Web](sistema-de-monitoreo-automatizado-de-servicios/test_pics/Dashboard_Web.png)
+
+
