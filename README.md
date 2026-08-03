@@ -30,8 +30,6 @@ El sistema de alertas funciona mediante un Webhook que se comunica directamente 
 
 ## 📸 Evidencias de Ejecución
 
-*(Nota: Asegúrate de tener estas imágenes en la carpeta de tu repositorio)*
-
 **1. Flujo completo y exitoso en n8n:**
 ![Flujo de n8n](sistema-de-monitoreo-automatizado-de-servicios/test_pics/Workflow_n8n.png)
 
